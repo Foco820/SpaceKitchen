@@ -687,9 +687,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5791fb610ad19834fa92b5b91d49c17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  walkSpeed: 5
+  sprintSpeed: 8
   jumpHeight: 2
-  gravity: -9.81
+  gravity: -30
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
