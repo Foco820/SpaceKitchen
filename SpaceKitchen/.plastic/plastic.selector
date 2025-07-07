@@ -1,4 +1,0 @@
-repository "SpaceKitchen@tj_wechat_os_qy080rjofcyijzyrpnhjpn32c@cloud.cn"
-  path "/"
-    br "/main"
-    co "/main"
