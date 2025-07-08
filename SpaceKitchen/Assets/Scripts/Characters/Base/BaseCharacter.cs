@@ -4,7 +4,7 @@ using UnityEngine;
 
 //基础移动脚本
 
-public class CharacterMovement : MonoBehaviour
+public abstract class BaseCharacter : MonoBehaviour
 {
     [Header("移动参数")]
     public float walkSpeed = 5f;         //水平移速
@@ -14,34 +14,31 @@ public class CharacterMovement : MonoBehaviour
 
     [Header("地面检测")]
     public LayerMask groundLayer;                          //地面遮罩层
+    public bool isGrounded;                                //是否触地
 
-    private CharacterController controller;
-    private Vector3 velocity;                              //角色速度向量
-    private bool isGrounded;                               //是否触地
-    private float currentSpeed;                            //当前速度（walk or sprint）
+    protected CharacterController controller;
+    protected Vector3 velocity;                              //角色速度向量
+    protected float currentSpeed;                            //当前速度（walk or sprint）
 
-    void Start()
+    protected virtual void Start()
     {
         controller = GetComponent<CharacterController>();
         currentSpeed = walkSpeed;                             //初始化速度为walkSpeed
     }
 
-    void Update()
+    protected virtual void Update()
     {
         //1.触地检测
         CheckGrounded();
 
-        //2.水平移动
+        //2.水平移动+跳跃
         HandleMovement();
 
-        //3.跳跃
-        HandleJump();
-
-        //4.重力应用
+        //3.重力应用
         ApplyGravity();
     }
 
-    void CheckGrounded()
+    protected virtual void CheckGrounded()
     {
         float radiusReduction = 0.05f;                                 //侧面缓冲空间，防止接触墙壁误检
         float verticalOffset = 0.1f;                                   //球体检测球心上抬偏移量，防止漏检
@@ -57,30 +54,23 @@ public class CharacterMovement : MonoBehaviour
 
     }
 
-    void HandleMovement()
+    protected abstract void HandleMovement();
+
+    public virtual void Move(Vector3 direction)
     {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-
-        Vector3 move = transform.right * x + transform.forward * z;     //水平移动向量
-        Vector3 totalMove = move * currentSpeed;
-        totalMove.y = velocity.y;                                       //合并水平和垂直移动
-
-        //疾跑
-        currentSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed;
-
-        controller.Move(totalMove * Time.deltaTime);                    //发生：移动和跳跃
+        if (direction.magnitude > 1f) direction.Normalize();            //向量归一化，避免斜角移动时速度过快，操作一致性被破坏
+        controller.Move(direction * Time.deltaTime);                    //发生：移动和跳跃
     }
 
-    void HandleJump()
+    public virtual void Jump()
     {
-        if (isGrounded && Input.GetButtonDown("Jump"))
+        if (isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);         //为了到达指定高度jumpHeight所需的初始垂直速度 v^2 = 2gh
         }
     }
 
-    void ApplyGravity()
+    protected virtual void ApplyGravity()
     {
         //触地
         if (isGrounded && velocity.y < 0)

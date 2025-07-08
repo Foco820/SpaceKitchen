@@ -684,7 +684,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1389141718}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5791fb610ad19834fa92b5b91d49c17b, type: 3}
+  m_Script: {fileID: 11500000, guid: ab9cb91b1ac496440b83f59522d744ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 5
@@ -694,6 +694,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  isGrounded: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
