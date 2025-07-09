@@ -31,7 +31,7 @@ public abstract class BaseCharacter : MonoBehaviour
         //1.触地检测
         CheckGrounded();
 
-        //2.水平移动+跳跃
+        //2.移动+跳跃
         HandleMovement();
 
         //3.重力应用
@@ -59,7 +59,7 @@ public abstract class BaseCharacter : MonoBehaviour
     public virtual void Move(Vector3 direction)
     {
         if (direction.magnitude > 1f) direction.Normalize();            //向量归一化，避免斜角移动时速度过快，操作一致性被破坏
-        controller.Move(direction * Time.deltaTime);                    //发生：移动和跳跃
+        controller.Move(direction);                                     //发生：移动和跳跃
     }
 
     public virtual void Jump()
