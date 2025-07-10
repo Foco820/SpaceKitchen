@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//食材基类
 public class Ingredient : MonoBehaviour
 {
     public IngredientType currentType;           //当前食物类型
