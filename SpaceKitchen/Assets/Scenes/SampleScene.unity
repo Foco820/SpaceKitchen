@@ -132,6 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 214648004}
   - component: {fileID: 214648005}
+  - component: {fileID: 214648006}
   m_Layer: 0
   m_Name: Grill
   m_TagString: Untagged
@@ -176,6 +177,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0112699, y: 1, z: 2.933599}
   m_Center: {x: 0.0056349635, y: 0, z: 0.00074613094}
+--- !u!114 &214648006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214648003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ec203b0a35600546b53a9c46207faf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentIngredient: {fileID: 0}
+  cooTime: 5
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1079,6 +1094,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1990323574}
   - component: {fileID: 1990323575}
+  - component: {fileID: 1990323576}
   m_Layer: 0
   m_Name: CuttingBoard
   m_TagString: Untagged
@@ -1123,6 +1139,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0771232, y: 1, z: 2.3983917}
   m_Center: {x: 0.001074791, y: 0, z: -0.0052125454}
+--- !u!114 &1990323576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990323573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f4385d5a9def2e4d9751f6075fd8018, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentIngredient: {fileID: 0}
 --- !u!1 &2059293427
 GameObject:
   m_ObjectHideFlags: 0

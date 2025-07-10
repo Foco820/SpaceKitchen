@@ -2,17 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CuttingBoard : MonoBehaviour
+//’Ë∞Â
+public class CuttingBoard : Kitchenware
 {
-    // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
+    }
+
+    //÷¥––«–
+    public void ChopIngredient()
+    {
+        if (currentIngredient != null && currentIngredient is Pork pork)
+        {
+            pork.Chop();
+        } 
     }
 }

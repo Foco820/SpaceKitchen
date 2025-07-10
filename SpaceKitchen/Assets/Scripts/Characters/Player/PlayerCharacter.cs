@@ -10,6 +10,10 @@ public class PlayerCharacter : BaseCharacter
     private float originalHeight;          //当前高度
     private bool isCrouching;              //是否下蹲
 
+    [Header("交互系统")]
+    private Ingredient heldIngredient;     //当前手持食材
+
+
     protected override void Start()
     {
         base.Start();
@@ -22,7 +26,26 @@ public class PlayerCharacter : BaseCharacter
 
         //下蹲
         if (Input.GetKeyDown(KeyCode.LeftControl)) Crouch();
+
+
+        //检测交互
+        DetectInteractable();
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (heldIngredient == null)
+            {
+                //尝试拾取
+                TryPickUp();
+            }
+            else
+            {
+                //尝试使用
+                TryInteract();
+            }
+        }
     }
+
+
 
     protected override void HandleMovement()
     {
@@ -45,5 +68,21 @@ public class PlayerCharacter : BaseCharacter
     {
         isCrouching = !isCrouching;
         controller.height = isCrouching ? crouchHeight : originalHeight;
+    }
+
+
+    private void DetectInteractable()
+    {
+        
+    }
+
+    private void TryPickUp()
+    {
+
+    }
+
+    private void TryInteract()
+    {
+
     }
 }

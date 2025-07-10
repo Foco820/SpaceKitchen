@@ -2,17 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//厨具基类
 public class Kitchenware : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Ingredient currentIngredient;          //当前厨具上的食材
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
+    }
+
+    //放置食材
+    public virtual bool PlaceIngredient(Ingredient ingredient)
+    {
+        if (currentIngredient == null)                           //厨具上为空（一次只能放置一个食材，后续要改）
+        {
+            currentIngredient = ingredient;
+            //将食材移动到厨具上方
+            ingredient.transform.position = transform.position + Vector3.up * .2f;
+            
+            return true;
+        }
+        return false;
+    }
+
+    //移除食材
+    public virtual void RemoveIngredient()
+    {
+        currentIngredient = null;
     }
 }
