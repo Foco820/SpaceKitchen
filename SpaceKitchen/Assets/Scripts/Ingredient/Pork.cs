@@ -11,7 +11,7 @@ public class Pork : Ingredient
     void Start()
     {
         //≥ı ºªØ÷Ì»‚¿‡ ≥≤ƒ√˚≥∆Œ™…˙÷Ì»‚
-        currentType = IngredientType.RawProk;
+        currentType = IngredientType.RawPork;
         UpdateDisplayName();
     }
 
@@ -26,7 +26,7 @@ public class Pork : Ingredient
         chopCount++;
 
         //…˙÷Ì»‚ => ÷Ì≈≈
-        if (chopCount >= 5 && currentType == IngredientType.RawProk)
+        if (chopCount >= 5 && currentType == IngredientType.RawPork)
         {
             currentType = IngredientType.PorkChop;
             chopCount = 0;
@@ -44,15 +44,20 @@ public class Pork : Ingredient
     //øæ
     public void Cook()
     {
-        //÷Ì»‚ => øæ÷Ì»‚
-        if (currentType == IngredientType.RawProk)
+        switch (currentType)
         {
-            currentType = IngredientType.CookedPork;
-        }
-        //÷Ì≈≈ => øæ÷Ì≈≈
-        else if (currentType == IngredientType.PorkChop)
-        {
-            currentType = IngredientType.CookedPorkChop;
+            //÷Ì»‚ => øæ÷Ì»‚
+            case IngredientType.RawPork:
+                currentType = IngredientType.CookedPork;
+                break;
+            //÷Ì≈≈ => øæ÷Ì≈≈
+            case IngredientType.PorkChop:
+                currentType = IngredientType.CookedPorkChop;
+                break;
+            //…’Ωπ
+            default:
+                Burn();
+                break;
         }
 
         UpdateDisplayName();

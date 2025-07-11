@@ -8,6 +8,9 @@ public class Ingredient : MonoBehaviour
     public IngredientType currentType;           //当前食物类型
     public string displayName;                   //显示名称
 
+    [Header("烧焦")]
+    public bool isBurnt = false;                 //是否烧焦
+
 
     void Start()
     {
@@ -25,7 +28,7 @@ public class Ingredient : MonoBehaviour
         //根据类型显示名称
         switch (currentType)
         {
-            case IngredientType.RawProk:
+            case IngredientType.RawPork:
                 displayName = "生猪肉";
                 break;
             case IngredientType.PorkChop:
@@ -40,9 +43,22 @@ public class Ingredient : MonoBehaviour
             case IngredientType.CookedPorkChop:
                 displayName = "烤猪排";
                 break;
+            case IngredientType.BurntFood:
+                displayName = "烧焦的食物";
+                break;
         }
 
         //更新UI
         GetComponentInChildren<TextMesh>().text = displayName;
+    }
+
+    //食物烧焦
+    public virtual void Burn()
+    {
+        if (!isBurnt)                    //防止重复烧焦
+        {
+            currentType = IngredientType.BurntFood;
+            isBurnt = true;
+        }
     }
 }
