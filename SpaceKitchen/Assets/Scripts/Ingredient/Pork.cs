@@ -40,26 +40,4 @@ public class Pork : Ingredient
 
         UpdateDisplayName();
     }
-
-    //øæ
-    public void Cook()
-    {
-        switch (currentType)
-        {
-            //÷Ì»‚ => øæ÷Ì»‚
-            case IngredientType.RawPork:
-                currentType = IngredientType.CookedPork;
-                break;
-            //÷Ì≈≈ => øæ÷Ì≈≈
-            case IngredientType.PorkChop:
-                currentType = IngredientType.CookedPorkChop;
-                break;
-            //…’Ωπ
-            default:
-                Burn();
-                break;
-        }
-
-        UpdateDisplayName();
-    }
 }

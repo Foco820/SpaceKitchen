@@ -59,6 +59,7 @@ public class Ingredient : MonoBehaviour
         {
             currentType = IngredientType.BurntFood;
             isBurnt = true;
+            UpdateDisplayName();         //烧焦后立即更新显示
         }
     }
 }
