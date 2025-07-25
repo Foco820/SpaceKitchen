@@ -11,6 +11,7 @@ public class PlayerCharacter : BaseCharacter
     private bool isCrouching;              //是否下蹲
 
     [Header("交互系统")]
+    public Transform holdPoint;            // 手持物品的位置
     private Ingredient heldIngredient;     //当前手持食材
 
 
@@ -30,18 +31,23 @@ public class PlayerCharacter : BaseCharacter
 
         //检测交互
         DetectInteractable();
+
+        // 按下鼠标：尝试拾取
         if (Input.GetMouseButtonDown(0))
         {
-            if (heldIngredient == null)
-            {
-                //尝试拾取
-                TryPickUp();
-            }
-            else
-            {
-                //尝试使用
-                TryInteract();
-            }
+            TryPickUp();
+        }
+
+        // 松开鼠标：尝试放置
+        if (Input.GetMouseButtonUp(0) && heldIngredient != null)
+        {
+            TryPutDown();
+        }
+
+        // 持续持有：更新位置
+        if (heldIngredient != null)
+        {
+            heldIngredient.transform.position = holdPoint.position;
         }
     }
 
@@ -81,7 +87,7 @@ public class PlayerCharacter : BaseCharacter
 
     }
 
-    private void TryInteract()
+    private void TryPutDown()
     {
 
     }
