@@ -25,6 +25,9 @@ public class Kitchenware : MonoBehaviour
             currentIngredient = ingredient;
             //将食材移动到厨具上方
             ingredient.transform.position = transform.position + Vector3.up * .2f;
+
+            //厨具功能
+            StartUsing();
             
             return true;
         }
@@ -35,5 +38,10 @@ public class Kitchenware : MonoBehaviour
     public virtual void RemoveIngredient()
     {
         currentIngredient = null;
+    }
+
+    protected virtual void StartUsing()
+    {
+        //具体厨具具体实现
     }
 }

@@ -56,78 +56,90 @@ public class Grill : Kitchenware
 
     void Update()
     {
-        if (currentIngredient != null)                                     //厨具上有食材，烤制
+        if (currentIngredient == null)                          //厨具上没有食材，不烤制
         {
-            //烧焦路径1
-            if (isBurning)                                          //烧焦（不在阶段List中的食材）
-            {
-                timer -= Time.deltaTime;
-                if (timer < 0)
-                {
-                    currentIngredient.Burn();            
-                    isBurning = false;                   
-                    currentStage = -1;                   
-                }
-            }
+            enabled = false;                              //避免“幽灵烤制”
+        }
 
-            //检测阶段
-            if (currentStage == -1 || currentIngredient.currentType != cookingStages[currentStage].requireInput)
-                                                                    //初始阶段 或 食材与当前阶段输入食材不匹配（比如玩家更换了食材） 
-            {
-                bool foundStage = false;                      //是否检测到合适阶段
-
-                for (int i = 0; i < cookingStages.Count; i++) //遍历寻找合适阶段
-                {
-                    if (cookingStages[i].requireInput == currentIngredient.currentType)
-                    {
-                        currentStage = i;
-                        timer = cookingStages[i].time;
-                        foundStage = true;
-                        break;
-                    }
-                }
-
-                if (!foundStage)                              //没有找到合适阶段
-                {
-                    isBurning = true;
-                    timer = defaultBurnTime;
-                    return;
-                }
-            }
-
-            //烹饪计时
+        //烧焦路径1
+        if (isBurning)                                          //烧焦（不在阶段List中的食材）
+        {
             timer -= Time.deltaTime;
-
-            //阶段转变
-            if (timer <= 0)
+            if (timer < 0)
             {
-                if (cookingStages[currentStage].output == IngredientType.BurntFood)
-                                                                    //烧焦路径2          
-                {
-                    currentIngredient.Burn();                 //烧焦（在阶段List中的食材）        
-                }
-                else                                                //烤制路径
-                {
-                    currentIngredient.currentType = cookingStages[currentStage].output;
-                    currentIngredient.UpdateDisplayName();    //更新食材
-                }
-
-                //移动到下一个阶段
-                if (currentStage < cookingStages.Count - 1)
-                {
-                    currentStage++;
-                    timer = cookingStages[currentStage].time;
-                }
-                else                                                //List里的最后一个结构体   
-                {
-                    currentStage = -1;
-                }
+                currentIngredient.Burn();
+                isBurning = false;
+                currentStage = -1;
             }
         }
-        else                                                               //厨具上没有食材，不烤制
+
+        //检测阶段
+        if (currentStage == -1 || currentIngredient.currentType != cookingStages[currentStage].requireInput)
+        //初始阶段 或 食材与当前阶段输入食材不匹配（比如玩家更换了食材） 
         {
-            currentStage = -1;                                      //初始阶段
-            isBurning = false;                     
+            bool foundStage = false;                      //是否检测到合适阶段
+
+            for (int i = 0; i < cookingStages.Count; i++) //遍历寻找合适阶段
+            {
+                if (cookingStages[i].requireInput == currentIngredient.currentType)
+                {
+                    currentStage = i;
+                    timer = cookingStages[i].time;
+                    foundStage = true;
+                    break;
+                }
+            }
+
+            if (!foundStage)                              //没有找到合适阶段
+            {
+                isBurning = true;
+                timer = defaultBurnTime;
+                return;
+            }
         }
+
+        //烹饪计时
+        timer -= Time.deltaTime;
+
+        //阶段转变
+        if (timer <= 0)
+        {
+            if (cookingStages[currentStage].output == IngredientType.BurntFood)
+            //烧焦路径2          
+            {
+                currentIngredient.Burn();                 //烧焦（在阶段List中的食材）        
+            }
+            else                                                //烤制路径
+            {
+                currentIngredient.currentType = cookingStages[currentStage].output;
+                currentIngredient.UpdateDisplayName();    //更新食材
+            }
+
+            //移动到下一个阶段
+            if (currentStage < cookingStages.Count - 1)
+            {
+                currentStage++;
+                timer = cookingStages[currentStage].time;
+            }
+            else                                                //List里的最后一个结构体   
+            {
+                currentStage = -1;
+            }
+        }
+    }
+
+    protected override void StartUsing()
+    {
+        base.StartUsing();
+        enabled = true;
+
+        currentStage = -1;                                      //重置阶段
+        isBurning = false;
+    }
+
+    public override void RemoveIngredient()
+    {
+        base.RemoveIngredient();
+        enabled = false;
     }
 }

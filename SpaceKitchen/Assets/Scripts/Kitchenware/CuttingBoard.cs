@@ -23,4 +23,9 @@ public class CuttingBoard : Kitchenware
             pork.Chop();
         } 
     }
+
+    protected override void StartUsing()
+    {
+        //砧板不为自动厨具，等待手动交互
+    }
 }
