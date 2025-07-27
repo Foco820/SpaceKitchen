@@ -11,8 +11,12 @@ public class PlayerCharacter : BaseCharacter
     private bool isCrouching;              //是否下蹲
 
     [Header("交互系统")]
-    public Transform holdPoint;            // 手持物品的位置
+    public Transform holdPoint;            //手持点
+    public float interactionDistance = 2f; //交互距离
+    public LayerMask interactableLayer;    //可交互物体层
+
     private Ingredient heldIngredient;     //当前手持食材
+    private Kitchenware currentKitchenware;//当前面对厨具
 
 
     protected override void Start()
@@ -77,9 +81,30 @@ public class PlayerCharacter : BaseCharacter
     }
 
 
+    //交互方法
     private void DetectInteractable()
     {
-        
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);           //检测射线
+        RaycastHit hit;                                                        //检测到的物体
+
+        if (Physics.Raycast(ray, out hit, interactionDistance, interactableLayer))
+        {
+            currentKitchenware =  hit.collider.GetComponent<Kitchenware>();       //检测厨具   
+
+            if (heldIngredient == null)
+            {
+                Ingredient ingredient = hit.collider.GetComponent<Ingredient>();  //检测食材
+
+                if (ingredient != null)
+                {
+                    //高亮显示可交换食材
+                }
+            }
+        }
+        else
+        {
+            currentKitchenware = null;
+        }
     }
 
     private void TryPickUp()
