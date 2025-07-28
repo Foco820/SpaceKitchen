@@ -17,6 +17,7 @@ public class PlayerCharacter : BaseCharacter
 
     private Ingredient heldIngredient;     //当前手持食材
     private Kitchenware currentKitchenware;//当前面对厨具
+    private Ingredient currentIngredient;  //当前面对食材
 
 
     protected override void Start()
@@ -87,33 +88,71 @@ public class PlayerCharacter : BaseCharacter
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);           //检测射线
         RaycastHit hit;                                                        //检测到的物体
 
+        currentKitchenware = null;
+        currentIngredient = null;
+
         if (Physics.Raycast(ray, out hit, interactionDistance, interactableLayer))
         {
             currentKitchenware =  hit.collider.GetComponent<Kitchenware>();       //检测厨具   
 
-            if (heldIngredient == null)
+            if (currentKitchenware != null)                                       //检测食材
             {
-                Ingredient ingredient = hit.collider.GetComponent<Ingredient>();  //检测食材
+                currentIngredient = currentKitchenware.currentIngredient;              //检测到厨具，获取厨具上食材
+            }
+            else
+            {
+                currentIngredient = hit.collider.GetComponent<Ingredient>();           //没检测到厨具，检测独立食材
 
-                if (ingredient != null)
+                if (currentIngredient != null && currentIngredient.currentKitchenware != null)    //根据食材倒获取其厨具
                 {
-                    //高亮显示可交换食材
+                    currentKitchenware = currentIngredient.currentKitchenware;
                 }
             }
-        }
-        else
-        {
-            currentKitchenware = null;
         }
     }
 
     private void TryPickUp()
     {
+        if (heldIngredient == null && currentIngredient != null)
+        {
+            heldIngredient = currentIngredient;
 
+            if (heldIngredient.currentKitchenware != null)                 //从厨具上取下
+            {
+                heldIngredient.currentKitchenware.RemoveIngredient();
+            }
+
+            heldIngredient.transform.SetParent(holdPoint);                 //拿手上
+            heldIngredient.transform.localPosition = Vector3.zero;
+
+            currentIngredient = null;                                      //清除面前食材
+        }
     }
 
     private void TryPutDown()
     {
+        if (heldIngredient == null) return;
 
+        if (currentKitchenware != null)                                     //尝试放置到厨具上
+        {
+            if (currentKitchenware.PlaceIngredient(heldIngredient))
+            {
+                heldIngredient = null;
+                return;
+            }
+        }
+
+        DropToGround();                                                      //否则丢地上
+    }
+
+    private void DropToGround()
+    {
+        heldIngredient.transform.SetParent(null);
+
+        // 简单放置：放在玩家前方
+        Vector3 dropPos = transform.position + transform.forward * 1f;
+        heldIngredient.transform.position = dropPos;
+
+        heldIngredient = null;
     }
 }
