@@ -112,6 +112,9 @@ public class Ingredient : MonoBehaviour
         tmpComponent.fontStyle = FontStyles.Bold;
         tmpComponent.color = Color.white;
 
+        TMP_FontAsset font = Resources.Load<TMP_FontAsset>("Fonts/ChineseFont");
+        if (font != null) tmpComponent.font = font;                  // 加载字体资源
+
         tmpComponent.enableVertexGradient = true;                    // 添加渐变效果
         tmpComponent.colorGradient = new VertexGradient(
             Color.white,
