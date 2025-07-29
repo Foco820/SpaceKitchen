@@ -28,6 +28,18 @@ public class Ingredient : MonoBehaviour
         
     }
 
+    private void LateUpdate()
+    {
+        //文本面向摄像机
+        if (tmpComponent != null && Camera.main != null)
+        {
+            Vector3 lookDirection = Camera.main.transform.position - tmpComponent.transform.position;
+            lookDirection.y = 0;                                                        //稳定文本y轴
+
+            tmpComponent.transform.rotation = Quaternion.LookRotation(lookDirection);   //跟随摄像机旋转
+        }
+    }
+
     public void UpdateDisplayName()
     {
         //根据类型显示名称
@@ -80,7 +92,7 @@ public class Ingredient : MonoBehaviour
     private void CreateTextMeshProObject()
     {
         //负责文本的子物体
-        GameObject textobj = new GameObject("TMP_Label");                      
+        GameObject textobj = new GameObject("TMP_Label");
         textobj.transform.SetParent(transform);                     //创建承载文本组件的子物体
         textobj.transform.localPosition = Vector3.up * 0.5f;        //文本子物体位置：食材上方
 
@@ -88,6 +100,11 @@ public class Ingredient : MonoBehaviour
         tmpComponent = textobj.AddComponent<TextMeshPro>();
 
         //配置
+        ConfigureTextComponent();
+    }
+
+    private void ConfigureTextComponent()
+    {
         tmpComponent.fontSize = 24;
         tmpComponent.alignment = TextAlignmentOptions.Center;
         tmpComponent.enableWordWrapping = false;
