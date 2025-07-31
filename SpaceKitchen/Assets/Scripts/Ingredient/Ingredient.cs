@@ -9,6 +9,7 @@ public class Ingredient : MonoBehaviour
     public IngredientType currentType;           //当前食物类型
 
     [Header("文本显示")]
+    private IngredientType lastType;             //上一次检查的食物类型
     public string displayName;                   //显示名称
     private TextMeshPro tmpComponent;            //TextMeshPro文本组件
 
@@ -25,7 +26,11 @@ public class Ingredient : MonoBehaviour
 
     void Update()
     {
-        
+        if (Time.frameCount % 10 == 0 && currentType != lastType)                      //检查文本更新（10帧一次。节省性能）
+        {
+            UpdateDisplayName();
+            lastType = currentType;
+        }
     }
 
     private void LateUpdate()
@@ -112,8 +117,15 @@ public class Ingredient : MonoBehaviour
         tmpComponent.fontStyle = FontStyles.Bold;
         tmpComponent.color = Color.white;
 
-        TMP_FontAsset font = Resources.Load<TMP_FontAsset>("Fonts/ChineseFont");
-        if (font != null) tmpComponent.font = font;                  // 加载字体资源
+        TMP_FontAsset customFont = Resources.Load<TMP_FontAsset>("Fonts/ChineseFont");
+        if (customFont != null)
+        {
+            tmpComponent.font = customFont;                          // 加载字体资源
+        }
+        else
+        {
+            tmpComponent.font = TMP_Settings.defaultFontAsset;
+        }                                                            
 
         tmpComponent.enableVertexGradient = true;                    // 添加渐变效果
         tmpComponent.colorGradient = new VertexGradient(
